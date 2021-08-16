@@ -16,16 +16,16 @@ public class TopicService {
 
     public List<Topic> findAll() {
         try {
-            List<Topic> a = repository.findAll();
-            for (Topic topic : a ) {
-                if ( topic.getTitle() == null) {
+            List<Topic> list = repository.findAll();
+            for (Topic topic : list ) {
+                if (topic.getTitle() == null) {
                     topic.setTitle("");
                 }
-                if ( topic.getMessage() == null) {
+                if (topic.getMessage() == null) {
                     topic.setMessage("");
                 }
             }
-            return a ;
+            return list ;
         }
         catch (Exception e) {
            e.printStackTrace();

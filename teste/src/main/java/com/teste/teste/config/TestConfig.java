@@ -38,29 +38,25 @@ public class TestConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        User author = new User(null, "Pedro", "pedro@gmail.com", "12345");
+        User author = new User("Pedro", "pedro@gmail.com");
         Course course = new Course(null, "Java", "Básico");
-
-        List<Answer> answer = new ArrayList<>();
 
         author = userRepository.save(author);
         course = courseRepository.save(course);
 
+        Answer answer1 = Answer.builder().message("Qual o seu erro?").creationDate(LocalDateTime.now()).author(author).solution(false).build();
+        Answer answer2 = Answer.builder().message("Tenta instanciar").creationDate(LocalDateTime.now()).author(author).solution(false).build();
 
-        Topic topic1 = Topic.builder().author(author).course(course).createDate(LocalDateTime.now()).status(TopicStatus.NOT_ANSWERED).build();
+        answerRepository.saveAll(Arrays.asList(answer1, answer2));
 
-//        Topic topic2 = new Topic(null, "Não funciona", "Projeto não roda",
-//                LocalDateTime.now(), TopicStatus.NOT_ANSWERED, author, course, answer);
+        Topic topic1 = new Topic(null, "Problemas no service", "Alguém pode me ajudar?",
+                LocalDateTime.now(), TopicStatus.valueOf(1), author, course);
 
-        topic1 = topicRepository.save(topic1);
+        Topic topic2 = new Topic(null, "Não funciona", "Projeto não roda",
+                LocalDateTime.now(), TopicStatus.valueOf(2), author, course);
 
-        Answer answer1 = new Answer(null, "Qual o seu erro?", topic1, LocalDateTime.now(), author, false);
-        Answer answer2 = new Answer(null, "Tenta instanciar", topic1, LocalDateTime.now(), author, false);
-
-        answer1 = answerRepository.save(answer1);
-        answer2 = answerRepository.save(answer2);
-
-        answer.add(answer1);
-        answer.add(answer2);
+        topic1.getAnswers().add(answer1);
+        topic2.getAnswers().add(answer2);
+        topicRepository.saveAll(Arrays.asList(topic1, topic2));
     }
 }

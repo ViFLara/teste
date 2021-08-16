@@ -1,6 +1,8 @@
 package com.teste.teste.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +12,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Answer implements Serializable {
@@ -23,6 +26,7 @@ public class Answer implements Serializable {
     @ManyToOne
     private Topic topic;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     private LocalDateTime creationDate = LocalDateTime.now();
 
     @ManyToOne
